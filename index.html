@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUE OR FALSE: POP CULTURE EDITION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
+        }
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="George Michael Logo">
+    <h1>TRUE OR FALSE: POP CULTURE EDITION</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: 'The main color of SpongeBob SquarePants is purple.', answer: 'False – It’s yellow.' },
+        { question: 'Beyoncé is a famous actress.', answer: 'True – she’s a musician AND an actress.' },
+        { question: '“Star Wars” is a series of movies set in space.', answer: 'True' },
+        { question: 'The “Minecraft” video game was released in the 1990s.', answer: 'False – It was released in 2009.' },
+        { question: 'The “Avengers” are a group of superheroes from Marvel Comics.', answer: 'True' },
+        { question: '“Paw Patrol” is a cartoon about a group of firefighter dogs.', answer: 'False – They are rescue dogs.' },
+        { question: 'Pikachu is a character in the “Pokémon” series.', answer: 'True' },
+        { question: 'Justin Bieber is a professional basketball player.', answer: 'False – He’s a singer.' },
+        { question: 'The “Minions” are characters from the movie “Despicable Me.”', answer: 'True' },
+        { question: 'Batman’s alter ego is Bruce Wayne.', answer: 'True' },
+        { question: '“Fortnite” is a popular video game released in the 1980s.', answer: 'False – It was released in 2017.' },
+        { question: 'Taylor Swift is known for her career as a chef.', answer: 'False – She’s a singer.' },
+        { question: 'Iron Man’s real name is Tony Stark.', answer: 'True' },
+        { question: 'The main character in “The Hunger Games” series is named Katniss Everdeen.', answer: 'True' },
+        { question: '“Scooby-Doo” is a cartoon about a detective dog and his friends.', answer: 'True' },
+        { question: 'Dora the Explorer’s best friend is named Benny.', answer: 'False – Her best friend is Boots.' },
+        { question: '“The Lion King” is a Disney movie about lions in Africa.', answer: 'True' },
+        { question: 'One Direction is a boy band from the United States.', answer: 'False – They are from the United Kingdom.' },
+        { question: 'The character Homer Simpson is from the TV show “Family Guy.”', answer: 'False – He’s from “The Simpsons.”' },
+        { question: 'The actress who portrays Hermione Granger in the “Harry Potter” movies is Emma Watson.', answer: 'True' },
+        { question: '“Stranger Things” is a TV series set in the 1980s.', answer: 'True' },
+        { question: 'The main character in “The Legend of Zelda” video game series is named Zelda.', answer: 'False – His name is Link.' },
+        { question: 'SpongeBob SquarePants lives in a pineapple under the sea.', answer: 'True' },
+        { question: '“The Walking Dead” is a TV series about a group of survivors in a post-apocalyptic world.', answer: 'True' },
+        { question: 'The superhero known as Captain America is also called Steve Rogers.', answer: 'True' },
+        { question: '“Cinderella” is a Disney princess known for her glass slippers.', answer: 'True' },
+        { question: 'Lady Gaga’s real name is Stefani Joanne Angelina Germanotta.', answer: 'True' },
+        { question: '“Jurassic Park” is a movie series about time-traveling dinosaurs.', answer: 'False – It’s about genetically cloned dinosaurs.' },
+        { question: 'The main character in “Winnie the Pooh” is a rabbit named Tigger.', answer: 'False – It’s a bear named Winnie the Pooh.' },
+        { question: '“The Simpsons” is the longest-running American animated series.', answer: 'True' },
+        { question: 'The character known as Darth Vader is from the “Star Wars” series.', answer: 'True' },
+        { question: '“The Princess and the Frog” is a Disney movie set in New York City.', answer: 'False – It’s set in New Orleans.' },
+        { question: 'Michael Jackson was known as the “King of Pop.”', answer: 'True' },
+        { question: '“Dora the Explorer” is a cartoon about a girl who solves mysteries.', answer: 'True' },
+        { question: 'The superhero known as Wonder Woman is from Marvel Comics.', answer: 'False – She’s from DC Comics.' },
+        { question: '“The Office” is a mockumentary TV series set in a paper company.', answer: 'True' },
+        { question: 'The character known as Iron Man is from the DC Comics universe.', answer: 'False – He’s from Marvel Comics.' },
+        { question: '“Frozen” is a Disney movie about two sisters, Elsa and Anna.', answer: 'True' },
+        { question: '“The Hunger Games” movie series is based on a trilogy of books.', answer: 'True' },
+        { question: 'The character known as Black Widow is from the “Harry Potter” series.', answer: 'False – She’s from the “Avengers” series.' },
+        { question: '“Pirates of the Caribbean” is a movie series about pirates.', answer: 'True' },
+        { question: 'Ariana Grande started her career as a child actress on Disney Channel.', answer: 'True' },
+        { question: '“Sesame Street” is a TV show primarily aimed at teenagers.', answer: 'False – It’s aimed at preschoolers.' },
+        { question: '“Twilight” is a series of books and movies about vampires.', answer: 'True' },
+        { question: 'The character known as Wolverine is from the “X-Men” series.', answer: 'True' },
+        { question: '“The Avengers” movie series is based on DC Comics characters.', answer: 'False – It’s based on Marvel Comics characters.' }
+    ];
+
+    // Shuffle questions randomly
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Randomly select the starting question
+    function startQuiz() {
+        shuffleArray(quizData); // Shuffle questions
+        currentQuestion = Math.floor(Math.random() * quizData.length); // Random starting question
+        showQuestion();
+    }
+
+    let currentQuestion = 0;
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestion].question;
+        answerContainer.innerText = quizData[currentQuestion].answer;
+
+        questionContainer.classList.remove('fadeOut');
+        answerContainer.classList.remove('fadeOut');
+
+        questionContainer.classList.add('fadeIn');
+        answerContainer.classList.add('fadeIn');
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.classList.remove('fadeIn');
+        answerContainer.classList.remove('fadeIn');
+
+        questionContainer.classList.add('fadeOut');
+        answerContainer.classList.add('fadeOut');
+
+        setTimeout(() => {
+            if (currentQuestion < quizData.length) {
+                showQuestion();
+            } else {
+                questionContainer.innerText = "Thank you for playing!";
+                answerContainer.innerText = "";
+                document.getElementById("next-button").style.display = "none"; // Hide the next button
+            }
+        }, 500);
+    }
+
+    // Start the quiz on page load
+    startQuiz();
+</script>
+
+</body>
+</html>
